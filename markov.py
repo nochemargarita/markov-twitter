@@ -6,6 +6,9 @@ from random import choice
 import twitter
 
 
+
+
+
 def open_and_read_file(filenames):
     """Take list of files. Open them, read them, and return one long string."""
 
@@ -63,12 +66,21 @@ def make_text(chains):
 def tweet(chains):
     """Create a tweet and send it to the Internet."""
 
-    # Use Python os.environ to get at environmental variables
-    # Note: you must run `source secrets.sh` before running this file
-    # to make sure these environmental variables are set.
+    api = twitter.Api(
+    consumer_key=os.environ['TWITTER_CONSUMER_KEY'],
+    consumer_secret=os.environ['TWITTER_CONSUMER_SECRET'],
+    access_token_key=os.environ['TWITTER_ACCESS_TOKEN_KEY'],
+    access_token_secret=os.environ['TWITTER_ACCESS_TOKEN_SECRET'])
 
-    pass
+    # This will print info about credentials to make sure 
+    # they're correct
+    print api.VerifyCredentials()
+      
+    status = api.PostUpdate(make_chains(text))
 
+    print status.text
+
+# Send a tweet
 
 # Get the filenames from the user through a command line prompt, ex:
 # python markov.py green-eggs.txt shakespeare.txt
